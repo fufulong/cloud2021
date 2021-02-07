@@ -1,0 +1,25 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: cloud-provider-payment8001
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud2021?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  # 所有Entity 别名类所在包
+  type-aliases-package: com.fufulong.springcloud.entities
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/

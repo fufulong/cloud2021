@@ -1,0 +1,15 @@
+server:
+  port: 7001
+eureka:
+  instance:
+    hostname: eureka7001.com
+  client:
+    # 注册中心自己
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      # 当有多个eureka注册中心实例的时候,本注册中心实例需要在其他注册中心实例上注册
+      # 所以这里的 defaultZone一定要写全其他注册中心的 host:port/eureka
+      defaultZone: http://eureka7002.com:7002/eureka/
+
+
