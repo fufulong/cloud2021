@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 public class OrderController {
 
     //远程调用的 地址
-    public static final String PAYMENY_URL = "http://localhost:8001";
+    public static final String PAYMENY_URL = "http://cloud-provider-service";
 
     @Resource
     private RestTemplate restTemplate;
@@ -22,11 +22,11 @@ public class OrderController {
         /**
          param1 请求地址，param2 请求参数， param3 返回类型
          */
-        return restTemplate.postForObject(PAYMENY_URL + "/paymentModule/create", payment, CommonResult.class);
+        return restTemplate.postForObject(PAYMENY_URL + "/payment/create", payment, CommonResult.class);
     }
 
     @GetMapping("/payment/get/{id}")
     public CommonResult<Payment> getPaymentById(@PathVariable("id")Long id){
-        return restTemplate.getForObject(PAYMENY_URL + "/paymentModule/get/" + id, CommonResult.class);
+        return restTemplate.getForObject(PAYMENY_URL + "/payment/get/" + id, CommonResult.class);
     }
 }

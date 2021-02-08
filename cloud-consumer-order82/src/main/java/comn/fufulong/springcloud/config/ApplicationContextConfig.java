@@ -1,5 +1,6 @@
-package com.fufulong.springcloud.config;
+package comn.fufulong.springcloud.config;
 
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -8,9 +9,8 @@ import org.springframework.web.client.RestTemplate;
 public class ApplicationContextConfig {
 
     @Bean
-    public RestTemplate getRestTemplate(){
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate;
+    @LoadBalanced
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
     }
-
 }

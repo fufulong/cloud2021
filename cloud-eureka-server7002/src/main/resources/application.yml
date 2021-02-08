@@ -10,6 +10,10 @@ eureka:
     service-url:
       # 当有多个eureka注册中心实例的时候,本注册中心实例需要在其他注册中心实例上注册
       # 所以这里的 defaultZone一定要写全其他注册中心的 host:port/eureka
-      defaultZone: http://eureka7001.com:7001/eureka/
-
-
+      #defaultZone: http://eureka7001.com:7001/eureka/
+      # 单机版的配置
+      defaultZone: http://eureka7002.com:7002/eureka/
+#  server:
+    # 当eureka服务器需要关闭自我保护的时候,需要关闭自我保护模式,并设置清除失效客户端实例的时间为 2000毫秒后
+#    enable-self-preservation: false
+#    eviction-interval-timer-in-ms: 2000
