@@ -1,0 +1,62 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: cloud-order-service
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      # 下面是2个eureka注册中心集群的配置
+      #      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    instance-id: order80
+    prefer-ip-address: true
+
+#不同服务端需要不同的riboon配置可以这样配置,但是这里只能配置 负载均衡的实现策略, Iping的实现类,ServerListFilter的实现类等
+cloud-payment-service:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+# openFeign中默认是关闭 hystrix对服务提供端的控制的,需要先开启
+feign:
+  hystrix:
+    enabled: true
+  # 这一段是 openFeign官网上关于不同 FeignClient的配置例子,可以配置连接超时时间,读取超时时间,日志等级等
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+        # 默认没有Retryer,errorDecoder,Request.Option的设置,如配置retryer,需要手动模仿或者使用feign.Retryer.Default写配置类,再放类名在这里
+      cloud-payment-service:
+        connectTimeout: 2000
+        # 经过试验,服务实例先经过Ribbon的超时时间的 readTimeout的检验(如果配置了重试,到了超时时间还没有结果返回的话,直接触发hystrix的降级
+        readTimeout: 6000
+        loggerLevel: full
+# hystrix控制的服务端的默认超时配置和 各个FeiClient的方法的实例配置
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 8000
+#    格式是   类名#方法名(参数类型1,参数类型2,.....)
+    PaymentService#paymentInfo_Timeout(Integer):
+      execution:
+        timeout:
+          enable: true
+        isolation:
+          thread:
+            # 这个时间要大于下面 Ribbon对应客户端的服务提供者
+            # (MaxAutoRetries+MaxAutoRetriesNextServer+(MaxAutoRetries *MaxAutoRetriesNextServer)) *readTimeout  的时间
+            timeoutInMilliseconds: 13000
+

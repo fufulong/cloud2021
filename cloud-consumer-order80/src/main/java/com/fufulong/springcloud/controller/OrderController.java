@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 public class OrderController {
 
     //远程调用的 地址
-    public static final String PAYMENY_URL = "http://cloud-provider-service";
+    public static final String PAYMENY_URL = "http://cloud-payment-service";
 
     @Resource
     private RestTemplate restTemplate;
