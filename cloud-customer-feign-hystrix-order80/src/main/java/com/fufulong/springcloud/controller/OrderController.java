@@ -42,6 +42,13 @@ public class OrderController {
         return paymentService.paymentInfo_Timeout(id);
     }
 
+    @GetMapping("/customer/payment/circuit/{id}")
+    public String paymentCircuitBreaker(@PathVariable("id")Integer id){
+        log.info("消费者调用 paymentCircuitBreaker 方法,id=" + id + ",现在的时间:"
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        return paymentService.paymentCircuitBreaker(id);
+    }
+
     public String paymentInfo_TimeoutHandler(Integer id){
         log.info("消费者调用 paymentInfo_TimeoutHandler 方法,id=" + id);
         return paymentService.paymentInfo_Timeout(id);

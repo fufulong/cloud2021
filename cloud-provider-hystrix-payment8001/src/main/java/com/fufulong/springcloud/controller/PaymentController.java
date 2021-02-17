@@ -37,4 +37,20 @@ public class PaymentController {
         log.info("paymentInfo_timeout");
         return paymentService.paymentinfo_Timeout(id);
     }
+
+    //====服务熔断
+    @GetMapping("/payment/circuit/{id}")
+    public String paymentCircuitBreaker(@PathVariable("id")Integer id){
+        return paymentService.paymentCircuitBreaker(id);
+    }
+
+    /**
+     * 测试 getAway网关的接口
+     * @param id
+     * @return
+     */
+    @GetMapping("/payment/lb/{id}")
+    public String paymentlb(@PathVariable("id") Integer id ){
+        return "执行了服务提供者8001的paymentlb, id = " +id;
+    }
 }

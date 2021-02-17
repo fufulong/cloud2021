@@ -1,0 +1,20 @@
+server:
+  port: 80
+  servlet:
+    context-path: /
+spring:
+  application:
+    name: nacos-order-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        namespace: 5c6e24b4-94bb-4cf3-8218-0a587c71022d
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+service-url:
+  nacos-payment-service: http://nacos-payment-provider

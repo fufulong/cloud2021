@@ -1,0 +1,18 @@
+server:
+  port: 3377
+spring:
+  profiles:
+    active: dev
+  application:
+    name: nacos-config-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848  # nacos作为服务注册中心
+        namespace: 5c6e24b4-94bb-4cf3-8218-0a587c71022d
+      config:
+        server-addr: localhost:8848 # nacos作为服务配置中心
+        file-extension: yaml # 指定yaml 格式的配置
+        group: ${spring.profiles.active}
+        # 我在nacos服务中心创建的 cloud2021 命名空间的命名空间id
+        namespace: 5c6e24b4-94bb-4cf3-8218-0a587c71022d

@@ -16,6 +16,12 @@ eureka:
   instance:
     instance-id: order80
     prefer-ip-address: true
+ribbon:
+  ReadTimeout: 6000
+  ConnectTimeout: 6000
+  MaxAutoRetries: 1 #同一台实例最大重试次数,不包括首次调用
+  MaxAutoRetriesNextServer: 1 #重试负载均衡其他的实例最大重试次数,不包括首次调用
+  OkToRetryOnAllOperations: false  #是否所有操作都重试
 
 #不同服务端需要不同的riboon配置可以这样配置,但是这里只能配置 负载均衡的实现策略, Iping的实现类,ServerListFilter的实现类等
 cloud-payment-service:
@@ -48,15 +54,13 @@ hystrix:
           enabled: true
         isolation:
           thread:
-            timeoutInMilliseconds: 8000
-#    格式是   类名#方法名(参数类型1,参数类型2,.....)
-    PaymentService#paymentInfo_Timeout(Integer):
-      execution:
-        timeout:
-          enable: true
-        isolation:
-          thread:
-            # 这个时间要大于下面 Ribbon对应客户端的服务提供者
-            # (MaxAutoRetries+MaxAutoRetriesNextServer+(MaxAutoRetries *MaxAutoRetriesNextServer)) *readTimeout  的时间
-            timeoutInMilliseconds: 13000
-
+            timeoutInMilliseconds: 18000
+        circuitBreaker:
+          enabled: false
+          # 降级之后最近的 sleepWindowInMilliseconds 规定的时间窗口内,能够触发断路器开启的最小请求次数,没有达到这个次数,
+          # 就算请求全部失败,也不会是断路器开启,默认是 20,建议设置成 QPS * 窗口秒数 * 60%
+          requestVolumeThreshold: 10
+          # 降级之后最近的时间窗口设置,默认是 5秒
+          sleepWindowInMilliseconds: 10000
+          # 请求失败的百分比,默认是 80
+          errorThresholdPercentage: 60

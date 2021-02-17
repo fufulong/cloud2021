@@ -38,5 +38,15 @@ public class PaymentController {
         return new CommonResult<>(200, "没有对应id的记录", null);
     }
 
+    /**
+     * 测试 getAway网关的接口
+     * @param id
+     * @return
+     */
+    @GetMapping("/lb/{id}")
+    public String paymentlb(@PathVariable("id") Integer id ){
+        return "执行了服务提供者8002的paymentlb,id = " +id;
+    }
+
 
 }
